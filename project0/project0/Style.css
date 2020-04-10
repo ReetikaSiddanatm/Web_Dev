@@ -1,0 +1,15 @@
+
+@media (max-width: 500px) {
+    .study{
+    display : none;
+    }
+}
+
+h1{
+    color: indianred;
+    text-align: center;
+}
+ul li{
+    color:purple;
+    text-align: left;
+}
