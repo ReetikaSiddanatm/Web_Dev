@@ -1,0 +1,38 @@
+$color : orange;
+
+@media (max-width: 500px) {
+    .study{
+    display : none;
+    }
+}
+
+h1{
+    color: indianred;
+    font-style: italic;
+    text-align: center;
+    font:bold;
+}
+
+ul > li{
+    font-size: 20px;
+    color :purple;
+}
+
+ol{
+    font-size: 20px ;
+    color : $color;
+}
+%message{
+    
+        border: 5px ;
+        padding: 10px;
+        color:rgb(226, 43, 43);
+        
+}
+.study {
+    @extend %message;
+}
+
+
+
+

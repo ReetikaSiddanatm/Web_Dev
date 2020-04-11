@@ -1,0 +1,29 @@
+@media (max-width: 500px) {
+  .study {
+    display: none;
+  }
+}
+h1 {
+  color: indianred;
+  font-style: italic;
+  text-align: center;
+  font: bold;
+}
+
+ul > li {
+  font-size: 20px;
+  color: purple;
+}
+
+ol {
+  font-size: 20px;
+  color: orange;
+}
+
+.study {
+  border: 5px;
+  padding: 10px;
+  color: #e22b2b;
+}
+
+/*# sourceMappingURL=variable.css.map */
