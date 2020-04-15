@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+
+<head>
+    <title>
+        Welcome to My Page
+    </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" 
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+        <h1 class="display-4">Registration</h1>
+        </div>
+    </div>
+    <style>
+        
+        h1{
+            color: red;
+            text-align: center;
+            
+        }
+        h2{
+            color: blue;
+            text-align: left;
+        }
+        h3{
+            color: tomato;
+            text-align: left;
+        }
+        p{
+            font:bold
+        }
+        input[type=text], input[type=password],input[type=number] {
+            width: 70%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            display: inline-block;
+            border: none;
+            background: #f1f1f1;
+        }
+        .registerbtn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 20px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 20%;
+            opacity: 0.9;
+            position:  center;
+            }
+
+    </style>
+</head>
+<body>
+    
+    <form action = "/User" method="POST">
+        
+        
+        <h2>First Name :</h2>
+        <input type="text" placeholder="First Name" name="fname" required>
+
+        <h2>Last Name :</h2>
+        <input type="text" placeholder="Last Name" name="lname">
+
+        <h2>Age :</h2>
+        <input type="number" placeholder="Age" name="age">
+     
+        <h2>Gender:</h2>
+
+        <h3>Male</h3>
+        <input type="radio" id="male" name="gender" value="male">
+        
+        <h3>Female</h3>
+        <input type="radio" id="female" name="gender" value="female">
+        
+        <h2>Email Id</h2>
+        <input type="text" placeholder="abc@Email.com" name = "Email" required>
+
+        <h2>Password</h2>
+        <input type="password" placeholder="Must contain 8 characters" name = "password" required>
+
+        <h2>Repeat Password</h2>
+        <input type="password" placeholder="Repeat Password" name = "password" required>
+        
+        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+
+        <button type="submit" class="registerbtn">Register</button>
+
+        <p>Already have an account? <a href="Signin.html">Sign in</a>.</p>
+
+    </form>
+</body>
