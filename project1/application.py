@@ -31,6 +31,8 @@ db.init_app(app)
 # engine = create_engine(os.getenv("DATABASE_URL"))
 # ab = scoped_session(sessionmaker(bind=engine))
 
+
+
 @app.route('/')
 def indexed():
     if 'username' in session:
