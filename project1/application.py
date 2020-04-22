@@ -7,11 +7,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from model import *
-from  datetime import datetime
-
-
-
-  
+from Book_Details import *
+from  datetime import datetime  
 app = Flask(__name__)
 app.secret_key = "secret"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -94,7 +91,21 @@ def logout():
    # remove the username from the session if it is there
    session.pop('username', None)
    return redirect(url_for('index'))
+@app.route('/search')
+def search():
+   # remove the username from the session if it is there
+   book=get_book_author("Susan Cooper")
+   return render_template("Result.html",book=book)
+@app.route("/books/<string:book_id>")
+def book_details(book_id):
 
+    # isbn = "0380795272"
+    book = get_book(book_id)
+    print("----")
+    print(book)
+    # book.isbn, book.name, book.author, book.year = db_session.execute("SELECT isbn, name, author, year FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
+
+    return render_template("Book_Page.html", Book=book[0])
 
     
 
