@@ -7,6 +7,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from model import *
+from imports import *
 from  datetime import datetime
 
 
@@ -17,7 +18,7 @@ app.secret_key = "secret"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
-
+db1.init_app(app)
 # Check for environment variable
 # if not os.getenv("DATABASE_URL"):
 #     raise RuntimeError("DATABASE_URL is not set")
@@ -64,7 +65,7 @@ def authenticate():
             if Member[0].Email == email and Member[0].Password == pswd:
                 print(Member[0].Firstname)
                 session['username'] = request.form.get("Email")
-                return redirect(url_for('indexed'))   
+                return render_template("Search.html")  
             else:
                 return render_template("error.html", errors = " Username / Password is incorrect")
         else:
@@ -109,6 +110,54 @@ def logout():
    # remove the username from the session if it is there
    session.pop('username', None)
    return redirect(url_for('index'))
+
+
+@app.route('/Search',methods=["POST"])
+def search():
+    print("searching")
+    search = request.form.get("search")
+    # isbn = request.form.get("isbn")
+    # title = request.form.get("book name")
+    # author = request.form.get("Author")
+    print(type(search))
+    ##  Using Like Operator 
+    if search != '' :
+        if request.form.get("isbn") == "option1":
+            print(search+" like  "+"isbn")
+            book_search = Books.query.filter(Books.isbn.like('%'+search+'%')).all()
+            #book_search = db1.session.query(Books).filter((Books.isbn.like('%'+search+'%')))
+            print(book_search)
+            return render_template("Search.html", books = book_search)
+            # By title 
+        elif request.form.get("book name") == "option2":
+            print(search+" like   "+"book name")
+            book_search = db1.session.query(Books).filter((Books.tittle.like('%'+search+'%')))
+            print(book_search)
+            return render_template("Search.html", books = book_search)
+        # user is searching by author name
+        elif request.form.get("Author") == "option3":
+            print(search+" like   "+"author")
+            book_search = db1.session.query(Books).filter((Books.author.like('%'+search+'%')))
+            print(book_search)
+            return render_template("Search.html", books = book_search)
+        else:
+            print("wrong")
+            return render_template("error.html", errors = "Sorry the details given doesnt match")
+    
+           
+        # print("By details") 
+      
+        # s = db1.session.query(Books).filter(or_(Books.isbn==isbn,Books.tittle==title,Books.author==author)).all()
+        # print(s)
+        # if (len(s)!= 0):    
+        #     return render_template("list of books.html",books = s)
+        # else:
+        #     return render_template("error.html", errors = "Sorry the details given doesnt match")
+
+
+
+
+
 
 
     
