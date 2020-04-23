@@ -31,6 +31,8 @@ db.init_app(app)
 # engine = create_engine(os.getenv("DATABASE_URL"))
 # ab = scoped_session(sessionmaker(bind=engine))
 
+
+
 @app.route('/')
 def indexed():
     if 'username' in session:
@@ -51,13 +53,25 @@ def authenticate():
     Registartion.query.all()
     name = request.form.get("fname")
     email = request.form.get("Email")
-    
+    pswd  = request.form.get("password")
+       
     try:
         Member = db.session.query(Registartion).filter(Registartion.Email == email).all()
-        print(Member[0].Firstname)
-        session['username'] = request.form.get("Email")
-        return redirect(url_for('indexed'))   
-    
+        if len(Member) >0 :
+            
+            print(len(Member))
+            print(Member[0].Password)
+            if Member[0].Email == email and Member[0].Password == pswd:
+                print(Member[0].Firstname)
+                session['username'] = request.form.get("Email")
+                return redirect(url_for('indexed'))   
+            else:
+                return render_template("error.html", errors = " Username / Password is incorrect")
+        else:
+            return "<h1> Please Login / Register </h1>"
+        
+                    
+        
     except Exception :
 	    return render_template("error.html", errors = "Details are already given")
         
@@ -68,7 +82,8 @@ def User():
     Registartion.query.all()
     name = request.form.get("fname")
     email = request.form.get("Email")
-    register = Registartion(Firstname =  name ,Email=email,datetime = str(datetime.now()))
+    pswd  = request.form.get("password")
+    register = Registartion(Firstname =  name ,Email=email,Password = pswd,datetime = str(datetime.now()))
     
     try:
         db.session.add(register)

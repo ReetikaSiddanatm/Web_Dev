@@ -18,13 +18,12 @@ db.init_app(app)
 def main():
     # Create tables based on each table definition in `models`
   db.create_all()
-def query():
-  
+
   #Member = Registartion.query.get()
-  print(Member[0].Email)
+ 
   
 
 if __name__ == "__main__":
     # Allows for command line interaction with Flask application
   with app.app_context():
-    query()
+    main()

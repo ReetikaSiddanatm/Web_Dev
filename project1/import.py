@@ -31,10 +31,6 @@ class Books(db1.Model):
 
 db1.init_app(app1)
 db1.create_all()
-
-     
-
-
 def main():
     f= open("books.csv")
     reader = csv.reader(f)
