@@ -9,16 +9,16 @@
                <th>isbn</th>
                <th>title</th>
                <th>author</th>
-               <th>Book page</th>
+               
             </tr>
             {% for n in book %}
             <tr>
-                <td>{{n.isbn}}</td>
-                <td>{{n.tittle}}</td>
-                <td>{{n.author}}</td>
-                <td><a href="/books/{{n.isbn}}" style="text-align:center">Click here</a></td>
+                <td><a href="/books/{{n.isbn}}" style="text-align:center">{{n.isbn}}</a></td>
+                <td><a href="/books/{{n.isbn}}" style="text-align:center">{{n.tittle}}</a></td>
+                <td><a href="/books/{{n.isbn}}" style="text-align:center">{{n.author}}</a></td>
+                
             </tr>
             {% endfor %}
-          
+           
     </body>
 </html>
