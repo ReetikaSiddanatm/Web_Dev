@@ -43,17 +43,20 @@
             <div>
             <h5>Reviews</h5>
             <p>Give Review for this book</p>
-            <form action='/review/{{Book.isbn}}'>
+            <form action=''>
                 <button>Review</button>
             </form>
         </div>
             <div class="card">
                 <h5 class="card-header">Reviews</h5>
                 <div class="card-body">
-                  <h5 class="card-title">Special title treatment</h5>
-                  <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                 
+                   {% for r in review %} 
+                  <h5 class="card-title">{{r.userid}}</h5>
+                  <p class="card-text">{{r.text}}</p>
+                  <p class="card-text">{{r.rating}}</p>
+                  {% endfor %}
                 </div>
               </div>
+            
     </body>
 </html>

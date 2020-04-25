@@ -8,3 +8,4 @@ class Registartion(db.Model):
     Email = db.Column(db.String, nullable=False)
     datetime = db.Column(db.String,nullable= False)
     
+

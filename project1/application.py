@@ -14,7 +14,7 @@ app.secret_key = "secret"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
-
+from database import *
 # Check for environment variable
 # if not os.getenv("DATABASE_URL"):
 #     raise RuntimeError("DATABASE_URL is not set")
@@ -101,13 +101,30 @@ def book_details(book_id):
 
     # isbn = "0380795272"
     book = get_book(book_id)
-    print("----")
-    print(book)
+    review=get_review(book_id)
+    
     # book.isbn, book.name, book.author, book.year = db_session.execute("SELECT isbn, name, author, year FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
 
-    return render_template("Book_Page.html", Book=book[0])
+    return render_template("Book_Page.html", Book=book[0],review=review)
 
-    
+# @app.route("/review",methods = ["GET","POST"])
+# def add_review():
+
+#       if request.method == 'POST':
+#         email = request.form.get("EMAIL")
+#         book=request.form.get('ISBN')
+#         text=request.form.get('review')
+#         rating=request.form.get('rating')
+#         # print(rating)
+#         r = Review(userid= email,bookid= book,text = text, rating = rating)
+#         # print(r)
+#         db.session.add(r)
+#         db.session.commit()
+#         return render_template("review.html",message="Thankyou for ur feedback")
+      
+#       else :
+#         return redirect(url_for("add_review"))
+ 
 
   
 
