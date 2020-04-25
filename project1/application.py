@@ -110,7 +110,7 @@ def logout():
    # remove the username from the session if it is there
    session.pop('username', None)
    return redirect(url_for('index'))
-
+   
 
 @app.route('/Search',methods=["POST"])
 def search():
@@ -127,19 +127,32 @@ def search():
             book_search = Books.query.filter(Books.isbn.like('%'+search+'%')).all()
             #book_search = db1.session.query(Books).filter((Books.isbn.like('%'+search+'%')))
             print(book_search)
-            return render_template("Search.html", books = book_search)
+            type(book_search)
+            if (len(book_search) > 0):
+                return render_template("Search.html", books = book_search)
+            else :
+                return render_template("error.html", errors = "Sorry the details given doesnt match")
+           
             # By title 
         elif request.form.get("book name") == "option2":
             print(search+" like   "+"book name")
-            book_search = db1.session.query(Books).filter((Books.tittle.like('%'+search+'%')))
+            book_search = db1.session.query(Books).filter((Books.tittle.like('%'+search+'%'))).all()
             print(book_search)
-            return render_template("Search.html", books = book_search)
+            if (len(book_search) > 0):
+                return render_template("Search.html", books = book_search)
+            else :
+                return render_template("error.html", errors = "Sorry the details given doesnt match")
+                
         # user is searching by author name
         elif request.form.get("Author") == "option3":
             print(search+" like   "+"author")
-            book_search = db1.session.query(Books).filter((Books.author.like('%'+search+'%')))
+            book_search = db1.session.query(Books).filter((Books.author.like('%'+search+'%'))).all()
             print(book_search)
-            return render_template("Search.html", books = book_search)
+            if (len(book_search) > 0):
+                return render_template("Search.html", books = book_search)
+            else :
+                return render_template("error.html", errors = "Sorry the details given doesnt match")
+            
         else:
             print("wrong")
             return render_template("error.html", errors = "Sorry the details given doesnt match")

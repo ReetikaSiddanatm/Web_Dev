@@ -27,7 +27,18 @@
             width: 20%;
             opacity: 0.9;
             }
-            
+            .logout {
+            background-color: red;
+            color: white;
+            text-align: center;
+            padding: 4px 5px;
+            margin: 0 1200px;
+            border: none;
+            cursor: pointer;
+            width: 20%;
+            opacity: 0.9;
+            }
+           
         body{
                 background-color: aliceblue;
             }
@@ -44,6 +55,7 @@
     <h1>Search Here</h1>
 
        
+    <a href = "/" class = logout >Logout</a>
 
        <div class="container">
                 <form action= "/Search" method="POST" class="col-9">
@@ -69,6 +81,8 @@
                         <input type="text" class="form-control" name="search" placeholder="Title, ISBN, or Author">
                     </div>
                     <button type="submit" class="Submit">Search</button>
+
+                   
                 </form>
             </div>
             <div id= "searchresults">
