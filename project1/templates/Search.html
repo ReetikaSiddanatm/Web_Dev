@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Welcome to Search
+    </title>
+    <style>
+        .table{
+          margin-left: auto;
+          margin-right: auto;
+        }
+         h1,th{
+            color: blue;
+            text-align: center;
+        }
+        h2{
+            color: seagreen;
+            text-align: left;
+        }
+        .Submit {
+            background-color:green;
+            color: white;
+            padding: 8px 10px;
+            margin: 8px 0;
+            border: none;
+            cursor: pointer;
+            width: 20%;
+            opacity: 0.9;
+            }
+            .logout {
+            background-color: red;
+            color: white;
+            text-align: center;
+            padding: 4px 5px;
+            margin: 0 1200px;
+            border: none;
+            cursor: pointer;
+            width: 20%;
+            opacity: 0.9;
+            }
+           
+        body{
+                background-color: aliceblue;
+            }
+             td{
+                color: palevioletred;
+                text-align: center;
+            }
+           
+        
+    </style>
+</head>
+
+<body>
+    <h1>Search Here</h1>
+
+       
+    <a href = "/" class = logout >Logout</a>
+
+       <div class="container">
+                <form action= "/Search" method="POST" class="col-9">
+                  <br>
+                  
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="isbn" id="option1" value="option1" >
+                    <label class="form-check-label" for="inlineRadio1"> Search by ISBN </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="book name" id="option2" value="option2" >
+                    <label class="form-check-label" for="inlineRadio2"> Search by TITLE </label>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="Author" id="option3" value="option3" >
+                    <label class="form-check-label" for="inlineRadio3">Search by Author name</label>
+                  </div>
+        
+                  <br>
+        
+                    <div class="form-group">
+                        <label for="exampleInputEmail1"><h3>Search for Books</h3></label>
+                        <input type="text" class="form-control" name="search" placeholder="Title, ISBN, or Author">
+                    </div>
+                    <button type="submit" class="Submit">Search</button>
+
+                   
+                </form>
+            </div>
+            <div id= "searchresults">
+              <h1> Here is the top search list </h1>
+             <table class="table">
+            <thead class="thead-dark">
+            <tr>
+            <!-- <th scope="col">Serial.no</th> -->
+            <th scope="col">ISBN</th>
+            <th scope="col">TITLE OF THE BOOK</th>
+            <th scope="col">AUTHOR</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <td><a href="/books/{{book.isbn}}" style="text-align:center">{{ book.isbn }} </a></td>
+            <td><a href="/books/{{book.isbn}}" style="text-align:center">{{ book.tittle}}</a></td>
+            <td><a href="/books/{{book.isbn}}" style="text-align:center">{{ book.author}}</a></td>
+            
+        <tr>
+            <!-- <th scope="row">{{record}}</th> -->
+           
+        </tr>
+        {% endfor %}
+
+         
+        </tbody>
+      </table>
+              
+</body>
+
+</html>
