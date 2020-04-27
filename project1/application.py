@@ -123,11 +123,11 @@ def search():
     ##  Using Like Operator 
     if search != '' :
         if request.form.get("isbn") == "option1":
-            print(search+" like  "+"isbn")
+            #print(search+" like  "+"isbn")
             book_search = Books.query.filter(Books.isbn.like('%'+search+'%')).all()
             #book_search = db1.session.query(Books).filter((Books.isbn.like('%'+search+'%')))
-            print(book_search)
-            type(book_search)
+            # print(book_search)
+            # type(book_search)
             if (len(book_search) > 0):
                 return render_template("Search.html", books = book_search)
             else :
@@ -135,9 +135,9 @@ def search():
            
             # By title 
         elif request.form.get("book name") == "option2":
-            print(search+" like   "+"book name")
+            #print(search+" like   "+"book name")
             book_search = db1.session.query(Books).filter((Books.tittle.like('%'+search+'%'))).all()
-            print(book_search)
+            #print(book_search)
             if (len(book_search) > 0):
                 return render_template("Search.html", books = book_search)
             else :
@@ -145,9 +145,9 @@ def search():
                 
         # user is searching by author name
         elif request.form.get("Author") == "option3":
-            print(search+" like   "+"author")
+            #print(search+" like   "+"author")
             book_search = db1.session.query(Books).filter((Books.author.like('%'+search+'%'))).all()
-            print(book_search)
+            #print(book_search)
             if (len(book_search) > 0):
                 return render_template("Search.html", books = book_search)
             else :
