@@ -59,7 +59,11 @@ def authenticate():
             if Member[0].Email == email and Member[0].Password == pswd:
                 print(Member[0].Firstname)
                 session['username'] = request.form.get("Email")
-                return redirect(url_for('indexed')) 
+                return redirect(url_for('indexed'))   
+            else:
+                return render_template("error.html", errors = " Username / Password is incorrect")
+        else:
+            return "<h1> Please Login / Register </h1>" 
        
     
     except Exception :
