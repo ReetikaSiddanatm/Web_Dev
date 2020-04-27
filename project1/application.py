@@ -58,15 +58,25 @@ def authenticate():
 #     Registartion.query.all()
     name = request.form.get("fname")
     email = request.form.get("Email")
+    pswd  = request.form.get("password")
     
     try:
-        Member = db.session.query(Registartion).filter(Registartion.Email == email).all()
-        print(Member[0].Firstname)
-        session['username'] = request.form.get("Email")
-        return render_template("review.html")   
+            Member = db.session.query(Registartion).filter(Registartion.Email == email).all()
+            if len(Member) >0:
+                  if Member[0].Email == email and Member[0].Password == pswd:
+                        print(Member[0].Firstname)
+                        session['username'] = request.form.get("Email")
+                        return render_template("review.html") 
+
+                  else:
+                        return render_template("error.html", errors = " Username / Password is incorrect")
+                
+            else:
+                  
+                  return "<h1> Please Login / Register </h1>"  
     
     except Exception :
-	    return render_template("review.html")
+	    return render_template("error.html", errors = "Details were already given")
         
     
 @app.route("/User",methods = ["GET","POST"])
@@ -106,28 +116,27 @@ def logout():
 def add_review():
 
       if request.method == 'POST':
-            email = request.form.get("EMAIL")
-            print(email)
-            book=request.form.get('ISBN')
-            print(book)
-            text=request.form.get('review')
-            print(text)
-            rating=request.form.get('rating')
-            print(rating)
-            r = Review(userid= email,bookid= book,text = text, rating = rating)
-            print(r)
-            temp=list(request.form.items())
-            print(temp)
-            db.session.add(r)
-            db.session.commit()
-            # p=Review.query.filter_by(book)
-            # print(p)
-            return render_template("review.html",message="Thankyou for ur feedback")
-            # print("please give review")
-   
-      else :
-            return redirect(url_for("add_review"))
+            try:
 
+                  email = request.form.get("EMAIL")
+                  print(email)
+                  book=request.form.get('ISBN')
+                  print(book)
+                  text=request.form.get('review')
+                  print(text)
+                  rating=request.form.get('rating')
+                  print(rating)
+                  r = Review(userid= email,bookid= book,text = text, rating = rating)
+                  print(r)
+                  temp=list(request.form.items())
+                  print(temp)
+                  db.session.add(r)
+                  db.session.commit()   
+                  return render_template("review.html",message="Thankyou for ur feedback")
+            except Exception:
+                  return render_template("review.html",message="Already gave feedback")
+      else :
+            return render_template("review.html",message="Already gave feedback")
 # @app.route('/review',methods=['POST','GET'])
 # def rev():
 #     db.create_all()
