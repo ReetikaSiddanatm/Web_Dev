@@ -45,7 +45,7 @@ def index():
   
 @app.route("/auth",methods = ["GET","POST"])
 def authenticate():
-    Registartion.query.all()
+    #Registartion.query.all()
     name = request.form.get("fname")
     email = request.form.get("Email")
     pswd  = request.form.get("password")
