@@ -62,8 +62,15 @@
 
     </style>
     <script>
-        function registration()
-	{
+        function disableButton() {
+        var btn = document.getElementById('btn');
+        btn.disabled = true;
+        btn.innerText = 'Posting...'
+    }
+
+
+
+        function registration()	{
 
 		var firstname= document.getElementById("t1").value;
 		var email= document.getElementById("t2").value;
@@ -87,10 +94,12 @@
 		else if(email=='')
 		{
 			alert('Please enter your user email id');
+            
 		}
 		else if (!filter.test(email))
 		{
 			alert('Invalid email');
+            disableButton()
 		}
 		else if(uname=='')
 		{
@@ -103,24 +112,28 @@
 		else if(pwd=='')
 		{
 			alert('Please enter Password');
+            disableButton()
 		}
 		else if(cpwd=='')
 		{
 			alert('Enter Confirm Password');
+            disableButton()
 		}
 		else if(!pwd_expression.test(pwd))
 		{
 			alert ('Upper case, Lower case, Special character and Numeric letter are required in Password filed');
+            disableButton()
 		}
 		else if(pwd != cpwd)
 		{
 			alert ('Password not Matched');
+            disableButton()
 		}
-		else if(document.getElementById("t5").value.length < 6)
+		else if(document.getElementById("t4").value.length < 6)
 		{
 			alert ('Password minimum length is 6');
 		}
-		else if(document.getElementById("t5").value.length > 12)
+		else if(document.getElementById("t4").value.length > 12)
 		{
 			alert ('Password max length is 12');
 		}
@@ -166,7 +179,7 @@
         
         <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
 
-        <button type="submit" class="registerbtn" onclick="registration()">Register</button>
+        <button type="submit" class="registerbtn" id = 'btn' onclick="registration()">Register</button>
 
         <button type="submit" formaction="auth" class = "login" value="Login">Login</button>
    
