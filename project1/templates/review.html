@@ -1,0 +1,65 @@
+<html>
+    <head>
+        <title>
+            REVIEW
+        </title>
+        
+    </head>
+
+    <body>
+            <form action="/review" method= "POST">
+
+        <h1 style="text-align:center"> REVIEWS</h1>
+        
+        
+            <div class="control"  style="text-align:center" required>
+                
+
+                <form action="/review" method="post">
+                    <h3 style="text-align:center"> Please enter ISBN number</h3>
+                    <textarea name="ISBN" rows="1" cols="25" maxlength="350" placeholder ="Enter ISBN number"></textarea>
+                    <p></p>
+                    <p></p>
+                    <h3 style="text-align:center"> Please enter your email address</h3>
+                    <textarea name="EMAIL" rows="1" cols="25" maxlength="350" placeholder ="EMAIL_ID"></textarea>
+                    <p></p>
+                    <p></p>
+                    <h3 style="text-align:center;color:blue">RATE THIS BOOK </h3>
+                        <select name="rating" float: left>
+                          <option value="1">1</option>
+                              <option value="2">2</option>
+                              <option value="3">3</option>
+                              <option value="4">4</option>
+                              <option value="5">5</option>
+                          </select>
+                        <br>
+                        <p></p>
+                        <p></p>
+                        <h3 style="text-align:center">COMMENTS</h3>
+                        <textarea name="review" rows="4" cols="50" maxlength="350" placeholder ="Write a review for the book here(max characters:450)"></textarea>
+
+                        <br>
+                        <p></p>
+                        <p></p>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                        
+                      </form>
+                      <h4> {{message}}</h4>
+                
+            </div>
+
+        
+        <p></p>
+        <p></p>
+        
+    </form> 
+        
+        
+        
+       
+
+        
+    </body>
+    
+</html>

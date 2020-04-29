@@ -135,35 +135,31 @@ def search():
             book_search = Books.query.filter(Books.isbn.like('%'+search+'%')).all()
             #book_search = db1.session.query(Books).filter((Books.isbn.like('%'+search+'%')))
             print(book_search)
-            type(book_search)
-            if (len(book_search) > 0):
-                return render_template("Search.html", books = book_search)
-            else :
-                return render_template("error.html", errors = "Sorry the details given doesnt match")
+            
+            
             
                 # By title 
         elif request.form.get("book name") == "option2":
             print(search+" like   "+"book name")
             book_search = db1.session.query(Books).filter((Books.tittle.like('%'+search+'%'))).all()
             print(book_search)
-            if (len(book_search) > 0):
-                return render_template("Search.html", books = book_search)
-            else :
-                return render_template("error.html", errors = "Sorry the details given doesnt match")
+           
                     
             # user is searching by author name
         elif request.form.get("Author") == "option3":
             print(search+" like   "+"author")
             book_search = db1.session.query(Books).filter((Books.author.like('%'+search+'%'))).all()
             print(book_search)
-            if (len(book_search) > 0):
-                return render_template("Search.html", books = book_search)
-            else :
-                return render_template("error.html", errors = "Sorry the details given doesnt match")
+          
                 
         else:
             print("wrong")
             return render_template("error.html", errors = "Sorry the details given doesnt match")
+        
+        if (len(book_search) > 0):
+                return render_template("Search.html", books = book_search)
+            else :
+                return render_template("error.html", errors = "Sorry the details given doesnt match")
        
         
            # By giving the complete details
@@ -193,6 +189,34 @@ def book_details(book_id):
 
     return render_template("Book_Page.html", Book=book[0],review=review)
 
+
+
+
+@app.route("/review",methods = ["GET","POST"])
+def add_review():
+
+      if request.method == 'POST':
+            try:
+
+                  email = request.form.get("EMAIL")
+                  print(email)
+                  book=request.form.get('ISBN')
+                  print(book)
+                  text=request.form.get('review')
+                  print(text)
+                  rating=request.form.get('rating')
+                  print(rating)
+                  r = Review(userid= email,bookid= book,text = text, rating = rating)
+                  print(r)
+                  temp=list(request.form.items())
+                  print(temp)
+                  db.session.add(r)
+                  db.session.commit()   
+                  return render_template("review.html",message="Thankyou for ur feedback")
+            except Exception:
+                  return render_template("review.html",message="Already gave feedback")
+      else :
+            return render_template("review.html",message="Already gave feedback")
    
 
 
