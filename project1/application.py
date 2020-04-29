@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session,url_for,redirect
+from flask import Flask, session,url_for,redirect,jsonify
 from flask import Flask,render_template,request,flash
 from flask_session import Session
 from sqlalchemy import create_engine
@@ -151,7 +151,8 @@ def search():
                  
                 
         if (len(book_search) > 0):
-                return render_template("Search.html", books = book_search)
+                return redirect(url_for('Search_api'))
+               # return render_template("Search.html", books = book_search)
         else :
                 return render_template("error.html", errors = "Sorry the details given doesnt match")
     
@@ -168,8 +169,21 @@ def search():
 
 
 
+@app.route("/api/Search/<isbn>")
+def Search_api(isbn):
+    bookid = Books.query.get("isbn")
+    print(bookid)
+    if bookid is None:
+        return jsonify({"error": "Invalid isbn id"}), 422
 
+    return jsonify({
+                "ISBN": bookid.isbn,
+                "BookName": bookid.tittle,
+                "Author": bookid.author
+            })
+ 
 
+   
 
     
 
