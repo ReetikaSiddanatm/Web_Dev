@@ -47,15 +47,26 @@ def index():
   
 @app.route("/auth",methods = ["GET","POST"])
 def authenticate():
-    Registartion.query.all()
+    #Registartion.query.all()
     name = request.form.get("fname")
     email = request.form.get("Email")
-    
+    pswd  = request.form.get("password")
+       
     try:
         Member = db.session.query(Registartion).filter(Registartion.Email == email).all()
-        print(Member[0].Firstname)
-        session['username'] = request.form.get("Email")
-        return redirect(url_for('indexed'))   
+        if len(Member) >0 :
+            
+            print(len(Member))
+            print(Member[0].Password)
+            if Member[0].Email == email and Member[0].Password == pswd:
+                print(Member[0].Firstname)
+                session['username'] = request.form.get("Email")
+                return redirect(url_for('indexed'))   
+            else:
+                return render_template("error.html", errors = " Username / Password is incorrect")
+        else:
+            return "<h1> Please Login / Register </h1>" 
+       
     
     except Exception :
 	    return render_template("error.html", errors = "Details are already given")
