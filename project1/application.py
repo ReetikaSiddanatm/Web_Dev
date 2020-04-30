@@ -9,6 +9,8 @@ from flask_sqlalchemy import SQLAlchemy
 from model import *
 from Book_Details import *
 from  datetime import datetime  
+from flask import jsonify ,json
+from Goodreads_api import *
 app = Flask(__name__)
 app.secret_key = "secret"
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
@@ -106,6 +108,32 @@ def book_details(book_id):
     # book.isbn, book.name, book.author, book.year = db_session.execute("SELECT isbn, name, author, year FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
 
     return render_template("Book_Page.html", Book=book[0],review=review)
+@app.route("/api/book/<string:book_id>", methods=["GET"])
+def api_get_book(book_id):
+    books = get_book(book_id)
+    print(books)
+    # reviews = get_review(book_id)
+    # count=0
+    # avg=0
+    # total_avg=0.0
+    response = get_bookreads_api(book_id)
+    r=response['books'][0]
+
+    if request.method == "GET":
+        if (len(books)==0):
+            return jsonify({"Error": "Invalid book ISBN"}), 400
+        else:
+            book = books[0]
+            # for review in reviews:
+            #     count=count+1
+            #     avg=avg+int(review.rating)
+            # total_avg=avg/count    
+            return jsonify({
+                "title":book.tittle, 
+                "author":book.author, 
+                "isbn":book.isbn,
+                "no_of_reviewers":r["reviews_count"],
+                "rating":r["average_rating"]})
 
 # @app.route("/review",methods = ["GET","POST"])
 # def add_review():

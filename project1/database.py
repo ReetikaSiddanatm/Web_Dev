@@ -25,7 +25,7 @@ db = SQLAlchemy()
 class Review(db.Model):
     __tablename__ = "reviews"
     userid = db.Column(db.String, nullable = False)
-    bookid = db.Column(db.String, nullable = False,primary_key=True)
+    bookid = db.Column(db.String, primary_key=True)
     text = db.Column(db.String, nullable = True)
     rating = db.Column(db.Integer, nullable= False)
 
@@ -43,3 +43,4 @@ def main():
 
 if __name__ == "__main__":
         main()
+       
