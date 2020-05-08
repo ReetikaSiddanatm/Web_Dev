@@ -257,8 +257,8 @@ def bookdetails():
     try:
         
         reqData = request.get_json()
-        book_id= reqData.get("search")
-        
+        b= reqData.get("search")
+        book_id=str(b)
         print(book_id)
         books = get_book(book_id)
         if books is None :

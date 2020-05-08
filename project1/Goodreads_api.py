@@ -17,5 +17,5 @@ def get_bookreads_api(isbn):
     query = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
     logging.debug("goodreads call success")
     response = query.json()
-   
+    print(response)
     return response
