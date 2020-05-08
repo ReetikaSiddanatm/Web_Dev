@@ -112,7 +112,9 @@
                
                    let displaydata = `
                    
-                   <h2><u>Book  Page</u></h2>
+                  
+                   
+                    <h2>Book  Page  </h2>
                    <table class="table">
                        <thead class="thead-light">
                            <tr>
@@ -140,13 +142,37 @@
                                    <td class="table-light">${response.rating}</td>   
                            </tr>
                        </tbody>`;
+            const d=`
+                       
+                       <input type = text id = "Review" name = "comment" placeholder = "Give a comment for the book" >
+                       <button type="submit" class="btn btn-primary btn-lg" onclick = "reviews()">Submit</button>
+                       `;
+
+
+                       
+                     
+                      
+                       
                    
                    document.querySelector('#books').innerHTML += displaydata
+                   document.querySelector('#input').innerHTML +=d
                }    
            }
            const jsonData = JSON.stringify({"search" :val})
            request.send(jsonData);
+          
            return false;  
+       }
+       
+       function reviews(){
+       
+        const value = document.getElementById('Review').value.trim();
+        const string = "<h3> Review </h3>" 
+        console.log(value)
+        
+        document.querySelector('#books').innerHTML +=string
+        document.querySelector('#book').innerHTML +=value
+        
        }
 
 
@@ -187,6 +213,10 @@
         </div>
  
         <div class="row" id="books">
+        </div>
+        <div class="row" id="input">
+        </div>
+        <div class="row" id="book">
         </div>
     </div>
  
