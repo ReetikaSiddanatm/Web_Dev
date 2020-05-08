@@ -1,9 +1,9 @@
 import os
 
-from flask import Flask, session,url_for,redirect
+from flask import Flask, session,url_for,redirect,jsonify,json
 from flask import Flask,render_template,request,flash
 from flask_session import Session
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine,or_
 from sqlalchemy.orm import scoped_session, sessionmaker
 from flask_sqlalchemy import SQLAlchemy
 from model import *
@@ -11,6 +11,7 @@ from imports import *
 from Book_Details import *
 from database import *
 from  datetime import datetime
+from Goodreads_api import *
 
 
 
@@ -117,11 +118,15 @@ def logout():
    return redirect(url_for('index'))
 
 
+#############################  SEARCH WOTHOUT USING API ############################################
+
 
 @app.route('/Search',methods=["GET","POST"])
 def search():
     
     
+        if request.method == "GET":
+            return render_template("userHome.html")
         print("searching")
         search = request.form.get("search")
         # isbn = request.form.get("isbn")
@@ -158,7 +163,7 @@ def search():
         
         if (len(book_search) > 0):
                 return render_template("Search.html", books = book_search)
-            else :
+        else :
                 return render_template("error.html", errors = "Sorry the details given doesnt match")
        
         
@@ -174,8 +179,61 @@ def search():
 
 
     
+    
+######################### SEARCH API IS IMPLEMENTED HERE #######################################
 
-  
+@app.route("/api/Search",methods = ["POST"])
+def Search_api():
+    try :
+
+        if (not request.is_json) :
+            return jsonify({"error" : "not a json request"}), 400
+
+        reqData = request.get_json()
+
+        if "search" not in reqData:
+            return jsonify({"error" : "missing search param"}), 400
+            
+        value = reqData.get("search")
+        print(value)
+
+        if len(value) == 0 :
+            return jsonify({"error" : "no results found"}), 404
+
+           
+
+        
+        query = "%"+ value+"%"
+        print(query)
+        books = Books.query.filter(or_(Books.isbn.like(query), Books.tittle.like(query), Books.author.like(query)))
+        print(books)
+        try :
+
+            books[0].isbn
+
+            results = []
+
+            for book in books :
+
+                temp = {}
+
+                temp["isbn"] = book.isbn
+                temp["title"] = book.tittle
+                temp["author"] = book.author
+               
+                results.append(temp)
+            print(results)
+            return jsonify({"books" : results}), 200
+
+        except Exception as exc :
+
+            return jsonify({"error" : "no results found"}), 404
+
+    except Exception :
+        return jsonify({"error" : "Server Error"}), 500
+    
+    
+####################### WITHOUT USING API #####################  
 
 
 @app.route("/books/<string:book_id>")
@@ -188,6 +246,50 @@ def book_details(book_id):
     # book.isbn, book.name, book.author, book.year = db_session.execute("SELECT isbn, name, author, year FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
 
     return render_template("Book_Page.html", Book=book[0],review=review)
+
+
+
+#############################   USING API  #############################
+
+@app.route("/api/book" , methods=["POST"])
+def bookdetails():
+
+    try:
+        
+        reqData = request.get_json()
+        book_id= reqData.get("search")
+        
+        print(book_id)
+        books = get_book(book_id)
+        if books is None :
+            return jsonify({"error" : "invalid isbn"})
+
+        response = get_bookreads_api(book_id)
+        r=response['books'][0]
+        print(r)
+        if (len(books)==0):
+                return jsonify({"Error": "Invalid book ISBN"}), 404
+        else:
+            book = books[0]
+            
+            
+            return jsonify({
+                "title":book.tittle, 
+                "author":book.author, 
+                "isbn":book.isbn,
+                "no_of_reviewers":r["reviews_count"],
+                "rating":r["average_rating"]
+                }) , 200
+       
+     
+            
+       
+
+    except Exception as exe:
+        print (exe)
+        return jsonify({"error": "Server Error"}),404
+
+
 
 
 
@@ -218,6 +320,8 @@ def add_review():
       else :
             return render_template("review.html",message="Already gave feedback")
    
+
+
 
 
             
