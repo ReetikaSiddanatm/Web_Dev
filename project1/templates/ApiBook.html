@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+    <title>Home</title>
+    <style>
+        .input-group-prepend {
+            width: 100%;
+            font-size: medium;
+        }
+        .searchform label {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: large;
+            padding-top: 0;
+            padding-left: 8px;
+        }
+        #pop {
+            text-align: center;
+        }
+
+    </style>
+ 
+    <script>
+        
+        
+
+        function Book(){
+           
+            const request = new XMLHttpRequest();
+            document.querySelector('#books').innerHTML = ""
+            const value = document.querySelector('#search_item').value.trim();
+            console.log(value)
+            if (value.length === 0) {
+
+                document.querySelector('#books').style.color = "red";
+                document.querySelector('#books').innerHTML = "<br><b>You can't leave search bar empty<b>"
+                return;
+            }
+            request.open("POST" , "/api/book")
+            request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+            document.querySelector('#books').innerHTML = ""
+            document.querySelector('#books').innerHTML = "<br><b>Loading Results<b>"
+           
+            request.onload = () =>{
+                const response = JSON.parse(request.responseText);
+                document.querySelector('#books').innerHTML = ""      
+                console.log(response)
+                if (request.status === 200) {
+                     
+                    document.querySelector('#books').innerHTML = ""    
+                
+                    let displaydata = `
+                    
+                    <h2><u>Book  Page</u></h2>
+                    <table class="table">
+                        <thead class="thead-light">
+                            <tr>
+                                <th scope="col" class="bg-warning">Fields</th>
+                                <th scope="col">Details</th>
+                            </tr>
+                            <tr>
+                                <td class="bg-warning">ISBN No.</td>
+                                <td class="table-light">${response.isbn}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-warning">Title</td>
+                                    <td class="table-light">${response.title}</td>
+                                </tr>
+                                <tr>
+                                    <td class="bg-warning">Author</td>
+                                    <td class="table-light">${response.author}</td>
+                                </tr>
+                                
+                                <tr>
+                                    <td class="bg-warning">Average Reviews</td>
+                                    <td class="table-light">${response.no_of_reviewers}</td>
+                                </tr>
+                                    <td class="bg-warning">No of reviewers</td>
+                                    <td class="table-light">${response.rating}</td>   
+                            </tr>
+                        </tbody>`;
+                    
+                    document.querySelector('#books').innerHTML += displaydata
+                }    
+            }
+            const jsonData = JSON.stringify({"search" : value})
+            request.send(jsonData);
+            return false;  
+        }        
+</script>
+</head>
+
+ 
+<body>  
+       
+                                    
+    
+    <input type="search" placeholder="" name="search_item" class="form-control" id="search_item"  required><br>
+
+         
+                   
+        
+    <button  onclick="Book()">GetBook</button>
+    <p id="books"></p>               
+               
+   
+     
+ 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.min.js"></script>
+</body>
+ 
+</html>

@@ -17,6 +17,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 from database import *
+
 # Check for environment variable
 # if not os.getenv("DATABASE_URL"):
 #     raise RuntimeError("DATABASE_URL is not set")
@@ -107,8 +108,9 @@ def logout():
 @app.route('/search')
 def search():
    # remove the username from the session if it is there
-   book=get_book_author("Susan Cooper")
-   return render_template("Result.html",book=book)
+   return render_template("ApiBook.html")
+#    book=get_book_author("Susan Cooper")
+#    return render_template("Result.html",book=book)
 @app.route("/books/<string:book_id>")
 def book_details(book_id):
 
@@ -117,34 +119,34 @@ def book_details(book_id):
     review=get_review(book_id)
     
     # book.isbn, book.name, book.author, book.year = db_session.execute("SELECT isbn, name, author, year FROM books WHERE isbn = :isbn", {"isbn": isbn}).fetchone()
-
+    
     return render_template("Book_Page.html", Book=book[0],review=review)
-@app.route("/api/book/<string:book_id>", methods=["GET"])
-def api_get_book(book_id):
-    books = get_book(book_id)
-    print(books)
-    # reviews = get_review(book_id)
-    # count=0
-    # avg=0
-    # total_avg=0.0
-    response = get_bookreads_api(book_id)
-    r=response['books'][0]
+# @app.route("/api/book/<string:book_id>", methods=["GET"])
+# def api_get_book(book_id):
+#     books = get_book(book_id)
+#     print(books)
+#     # reviews = get_review(book_id)
+#     # count=0
+#     # avg=0
+#     # total_avg=0.0
+#     response = get_bookreads_api(book_id)
+#     r=response['books'][0]
 
-    if request.method == "GET":
-        if (len(books)==0):
-            return jsonify({"Error": "Invalid book ISBN"}), 400
-        else:
-            book = books[0]
-            # for review in reviews:
-            #     count=count+1
-            #     avg=avg+int(review.rating)
-            # total_avg=avg/count    
-            return jsonify({
-                "title":book.tittle, 
-                "author":book.author, 
-                "isbn":book.isbn,
-                "no_of_reviewers":r["reviews_count"],
-                "rating":r["average_rating"]})
+#     if request.method == "GET":
+#         if (len(books)==0):
+#             return jsonify({"Error": "Invalid book ISBN"}), 400
+#         else:
+#             book = books[0]
+#             # for review in reviews:
+#             #     count=count+1
+#             #     avg=avg+int(review.rating)
+#             # total_avg=avg/count    
+#             return jsonify({
+#                 "title":book.tittle, 
+#                 "author":book.author, 
+#                 "isbn":book.isbn,
+#                 "no_of_reviewers":r["reviews_count"],
+#                 "rating":r["average_rating"]})
 
 # @app.route("/review",methods = ["GET","POST"])
 # def add_review():
@@ -165,7 +167,42 @@ def api_get_book(book_id):
 #         return redirect(url_for("add_review"))
  
 
-  
+@app.route("/api/book" , methods=["POST"])
+def bookdetails():
+
+    try:
+        
+        reqData = request.get_json()
+        book_id= reqData.get("search")
+        
+        print(book_id)
+        books = get_book(book_id)
+        if books is None :
+            return jsonify({"error" : "invalid isbn"})
+
+        response = get_bookreads_api(book_id)
+        r=response['books'][0]
+        if (len(books)==0):
+                return jsonify({"Error": "Invalid book ISBN"}), 404
+        else:
+            book = books[0]
+            
+            
+            return jsonify({
+                "title":book.tittle, 
+                "author":book.author, 
+                "isbn":book.isbn,
+                "no_of_reviewers":r["reviews_count"],
+                "rating":r["average_rating"]
+                }) , 200
+       
+     
+            
+       
+
+    except Exception as exe:
+        print (exe)
+        return jsonify({"error": "Server Error"}),404
 
 
 
